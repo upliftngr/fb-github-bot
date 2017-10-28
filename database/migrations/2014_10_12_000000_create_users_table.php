@@ -18,6 +18,8 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('level')->default(2); //  default level is normal user
+            $table->string('status')->default(2); // default user is not activated
             $table->rememberToken();
             $table->timestamps();
         });
