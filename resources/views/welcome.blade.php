@@ -79,7 +79,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel - Facebook GitHub Integration
+                    Facebook - GitHub Integration
                 </div>
 
                 <div class="links">
