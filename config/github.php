@@ -69,8 +69,8 @@ return [
         ],
 
         'other' => [
-            'username'   => 'your-username',
-            'password'   => 'your-password',
+            'username'   => env('GITHUB_USER_NAME', 'your-username'),
+            'password'   => env('GITHUB_PASSWORD', 'your-password'),
             'method'     => 'password',
             // 'backoff'    => false,
             // 'cache'      => false,

@@ -19,10 +19,23 @@ class ManageGitHubController extends Controller
 		// we're done here - how easy was that, it just works!
 
 		// $repos = GitHub::repo()->show('upliftngr', 'Laravel-GitHub');
-		$repos = GitHub::repo()->show('upliftngr', 'fb-github-bot');
+		// $repos = GitHub::repo()->show('upliftngr', 'fb-github-bot');
+		// $repos = GitHub::repo()->contributors('ornicar', 'php-github-api');
+		// $repos = GitHub::repo()->contributors('upliftngr', 'fb-github-bot');
+		// $repos = GitHub::user()->repositories('upliftngr');
+		$all_repos = GitHub::user()->repositories('lightgh');
+		echo "<h3>ALL - REPOS</h3>";
+		dump($all_repos);
+		/*foreach ($all_repos as $key => $each_repo) {
+			echo "<h4>REPO: ({$each_repo['name']}) </h4>";
+			dump((GitHub::repo()->contributors('lightgh', $each_repo['name'])));
+		}*/
+		// $repos = GitHub::repo()->contributors('lightgh', 'basicgit-class');
 		// this example is simple, and there are far more methods available
 		
-		dump($org, $repos); 
+		// $repos = GitHub::authorizations()->all();
+		$repos = GitHub::connection('other')->authorizations()->all();
+		dump($repos); 
 		
 
     }
