@@ -79,7 +79,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Facebook - GitHub Integration
+                    Messenger - GitHub Integration
                 </div>
 
                 <div class="links">
