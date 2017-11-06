@@ -21,17 +21,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/test', 'ManageGitHubController@connectToGitHub');
 
-Route::get('/fbwebhook/', function() {
-    return "Hooks up with facebook";
-});
-
-Route::get('/messagefrombot/', function() {
-    return "Hello Mind, This is Chat bot, Your Controller";
-});
-
-Route::get('/speaktobot/', function() {
-    return "Hello world, I am this chat bot mind";
-});
 
 /*
 * ROUTES
@@ -65,3 +54,26 @@ Route::get('/listenhook/', function() {
     return "This is GitHub Listening Hook";
 });
 
+
+/**
+ * Facebook related hooks
+ */
+Route::get('/fbwebhook/', function() {
+    return "Hooks up with facebook";
+});
+
+
+Route::get('/webhook', 'ManageMessengerController@webhook');
+
+Route::post('/webhook', 'ManageMessengerController@webhook');
+
+Route::get('/messagefrombot/', function() {
+    return "Hello Mind, This is Chat bot, Your Controller";
+});
+
+Route::get('/speaktobot/', function() {
+    return "Hello world, I am this chat bot mind";
+});
+
+
+https://web.facebook.com/gituserscommunity
