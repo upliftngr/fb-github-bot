@@ -63,9 +63,9 @@ Route::get('/fbwebhook/', function() {
 });
 
 
-Route::get('/webhook', 'ManageMessengerController@webhook');
+Route::get('/webhook', 'ManageMessengerController@getWebhook');
 
-Route::post('/webhook', 'ManageMessengerController@webhook');
+Route::post('/webhook', 'ManageMessengerController@postWebhook');
 
 Route::get('/messagefrombot/', function() {
     return "Hello Mind, This is Chat bot, Your Controller";
