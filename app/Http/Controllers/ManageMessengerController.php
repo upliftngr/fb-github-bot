@@ -15,9 +15,11 @@ class ManageMessengerController extends Controller
     public function webhook(Request $request)
     {
     	if ($request->isMethod('post')) {
-    		return "Post-WebHook Hooks up with facebook";
+    		return env('GITHUB_VALIDATE_POST');
+    		// return "Post-WebHook Hooks up with facebook";
     	}else{
-    		return "Get-WebHook Hooks up with facebook";
+    		return env('GITHUB_VALIDATE_GET');
+    		// return "Get-WebHook Hooks up with facebook";
     	}
 
     	$webhook_token = env('WEBHOOK_TOKEN', 'webhook_token_default');
