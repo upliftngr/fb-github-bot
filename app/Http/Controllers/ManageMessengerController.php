@@ -12,19 +12,27 @@ class ManageMessengerController extends Controller
     }
 
 
+    // return "Get-WebHook Hooks to facebook";
     public function webhook(Request $request)
     {
-    	if ($request->isMethod('post')) {
-    		return env('GITHUB_VALIDATE_POST');
-    		// return "Post-WebHook Hooks up with facebook";
-    	}else{
-    		$verify_token = env('GITHUB_VALIDATE_GET');
-    		// if()
-    		dd($request->all());
+    	$webhook_token = env('WEBHOOK_TOKEN', 'webhook_token_default');
 
-    		// return "Get-WebHook Hooks up with facebook";
+    	if ($request->isMethod('post')) {
+    		return "Post-WebHook Hooks up with facebook";
+    	}else{
+
+    		$hub_mode = $request->input('hub_mode');
+    		$hub_challenge = $request->input('hub_challenge');
+    		$hub_verify_token = $request->input('hub_verify_token');
+    		
+    		if($hub_mode === 'subscribe' && $hub_verify_token === $webhook_token){
+    			return $hub_challenge;
+    		}
+    		
+    		#TODO - return a view with the status 
+    		return response('Unauthorized action.', 403);
+
     	}
 
-    	$webhook_token = env('WEBHOOK_TOKEN', 'webhook_token_default');
     }
 }
