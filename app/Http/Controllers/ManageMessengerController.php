@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ManageMessengerController extends Controller
 {
@@ -15,6 +16,7 @@ class ManageMessengerController extends Controller
     // return "Get-WebHook Hooks to facebook";
     public function getWebhook(Request $request)
     {
+    	Log::info('Get-WebHook: '. implode($request->input(), "  "));
     	$webhook_token = env('WEBHOOK_TOKEN', 'webhook_token_default');
 
     	$hub_mode = $request->input('hub_mode');
@@ -33,7 +35,7 @@ class ManageMessengerController extends Controller
     // handle post webhook requests
     public function postWebhook(Request $request)
     {
-    	
+    	Log::info('Post-WebHook: '. implode($request->input(), "  " ));
     }
 
 
