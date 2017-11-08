@@ -35,7 +35,9 @@ class ManageMessengerController extends Controller
     // handle post webhook requests
     public function postWebhook(Request $request)
     {
+
     	Log::info('Post-WebHook: '. implode($request->input(), "  " ));
+    	return "YEAHHH";
     }
 
 
