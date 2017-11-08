@@ -28,7 +28,7 @@ class ManageMessengerController extends Controller
     	}
     		
     		#TODO - return a view with the status 403
-    		abort(403, 'Unauthorized action.');
+    		// abort(403, 'Unauthorized action.');
 
     }
 
