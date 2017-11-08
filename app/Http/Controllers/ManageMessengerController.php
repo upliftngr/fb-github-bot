@@ -18,7 +18,10 @@ class ManageMessengerController extends Controller
     		return env('GITHUB_VALIDATE_POST');
     		// return "Post-WebHook Hooks up with facebook";
     	}else{
-    		return env('GITHUB_VALIDATE_GET');
+    		$verify_token = env('GITHUB_VALIDATE_GET');
+    		// if()
+    		dd($request->all());
+
     		// return "Get-WebHook Hooks up with facebook";
     	}
 
