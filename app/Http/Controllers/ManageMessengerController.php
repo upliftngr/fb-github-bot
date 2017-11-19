@@ -24,15 +24,12 @@ class ManageMessengerController extends Controller
     	$hub_challenge = $request->input('hub_challenge');
     	$hub_verify_token = $request->input('hub_verify_token');
     		
-    	if($hub_mode === 'subscribe' && $hub_verify_token === $webhook_token){
-    		return $hub_challenge;
-    	}
+    	if($hub_verify_token === $webhook_token){
+    		echo $hub_challenge;
+    	}else{
+    	   throw new Exception("Tokken not verified");
+        }
 
-
-    	throw new Exception("Tokken not verified");
-
-
-    	
     	// return view('welcome');
 
     }
@@ -42,7 +39,18 @@ class ManageMessengerController extends Controller
     {
 
     	Log::info('Post-WebHook: '. implode($request->input(), "  " ));
-    	return "YEAHHH";
+
+        $hub_mode = $request->input('hub_mode');
+        $hub_challenge = $request->input('hub_challenge');
+        $hub_verify_token = $request->input('hub_verify_token');
+            
+        if($hub_verify_token === $webhook_token){
+            echo $hub_challenge;
+        }else{
+           throw new Exception("Tokken not verified");
+        }
+
+    	echo "Working";
     }
 
 
@@ -70,6 +78,6 @@ class ManageMessengerController extends Controller
     		
 	}
 
-    
+
 
 }
