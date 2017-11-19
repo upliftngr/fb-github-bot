@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use GuzzleHttp\Client;
 
 class ManageMessengerController extends Controller
 {
@@ -26,12 +27,13 @@ class ManageMessengerController extends Controller
     	if($hub_mode === 'subscribe' && $hub_verify_token === $webhook_token){
     		return $hub_challenge;
     	}
-    		
-    		#TODO - return a view with the status 403
-    		// abort(403, 'Unauthorized action.');
-    		// 
+
+
+    	throw new Exception("Tokken not verified");
+
+
     	
-    	return view('welcome');
+    	// return view('welcome');
 
     }
 
@@ -61,5 +63,13 @@ class ManageMessengerController extends Controller
 	function callSendAPI(Request $request) {
 	  
 	}
+
+	public function checkWebHook(Request $request)
+	{
+		    	$client = new Client();
+    		
+	}
+
+    
 
 }

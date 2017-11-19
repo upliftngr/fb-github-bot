@@ -58,9 +58,7 @@ Route::get('/listenhook/', function() {
 /**
  * Facebook related hooks
  */
-Route::get('/fbwebhook/', function() {
-    return "Hooks up with facebook";
-});
+Route::get('/fbwebhook/', 'ManageMessengerController@checkWebHook');
 
 
 Route::get('/webhook', 'ManageMessengerController@getWebhook');
