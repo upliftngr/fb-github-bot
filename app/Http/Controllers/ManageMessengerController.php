@@ -127,7 +127,7 @@ class ManageMessengerController extends Controller
         'content-type' => 'application/json'
        );
        if (in_array('hi', $msgarray)) {
-            $answer = "Hello! how may I help you today?";
+            $answer = "Hello! Welcome to GitHubMessenger-Integrated-Bot. how may I help you today?";
             $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
          }
          elseif ($messageText == 'get started') {
