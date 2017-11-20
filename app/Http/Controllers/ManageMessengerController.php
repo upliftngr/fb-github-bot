@@ -80,7 +80,6 @@ class ManageMessengerController extends Controller
 	public function checkWebHook(Request $request)
 	{
 		    	$client = new Client();
-    		
 	}
 
     public function readMessage($input)
