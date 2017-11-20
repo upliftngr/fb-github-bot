@@ -141,7 +141,7 @@ class ManageMessengerController extends Controller
             $response = [
             'recipient' => ['id' => $senderId], 
             'message' => $answer, 
-            'access_token' => $this->accessToken
+            'access_token' => $accessToken
             ];
         }
        elseif (!empty($input['location'])) {
