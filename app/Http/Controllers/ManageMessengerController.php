@@ -46,7 +46,7 @@ class ManageMessengerController extends Controller
     	// $input = json_decode(file_get_contents('php://input'), true);
 
         // $input =  $request->json()->all(); //read json in request
-        $input =   print_r($request->input('entry'), true ); //read json in request
+        $input =   $request->input(); //read json in request
 
         // var_dump($input);
         //return response()->json($data); 
@@ -87,16 +87,10 @@ class ManageMessengerController extends Controller
     {
       try{
            $payloads = null;
-           $senderId = $input[0]['messaging'][0]['sender']['id'];
-           $messageText = $input[0]['messaging'][0]['message']['text'];
-           $postback = $input[0]['messaging'][0]['postback'];
-           $loctitle = $input[0]['messaging'][0]['message']['attachments'][0]['title'];
-
-           /*$senderId = $input['entry'][0]['messaging'][0]['sender']['id'];
+           $senderId = $input['entry'][0]['messaging'][0]['sender']['id'];
            $messageText = $input['entry'][0]['messaging'][0]['message']['text'];
            $postback = $input['entry'][0]['messaging'][0]['postback'];
-           $loctitle = $input['entry'][0]['messaging'][0]['message']['attachments'][0]['title'];*/
-
+           $loctitle = $input['entry'][0]['messaging'][0]['message']['attachments'][0]['title'];
            if (!empty($postback)) {
             $payloads = $input['entry'][0]['messaging'][0]['postback']['payload'];
             return ['senderid' => $senderId, 'message' => $payloads];
