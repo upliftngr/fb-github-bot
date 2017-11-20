@@ -163,7 +163,7 @@ class ManageMessengerController extends Controller
    }elseif($messageText == 'role'){
         $answer = 'Your Role is Technical Related';
         $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
-       }
+       
    }elseif($messageText == 'all'){
         $answer = 'All Repos Available';
         $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
