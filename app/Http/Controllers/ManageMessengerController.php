@@ -41,31 +41,17 @@ class ManageMessengerController extends Controller
     {
 
         // Log::info('Post-WebHook: '. implode($request->input(), "  " ));
-    	Log::info('Post-WebHook: '. $request->input('hub_verify_token') );
-
-        $hub_verify_token_recieved = $request->input('hub_verify_token');
-        $hub_verify_token_expected = env('WEBHOOK_TOKEN', 'webhook_token_default');
-        $pageAccessToken = $webhook_token = env('PAGE_ACCESS_TOKEN', 'page_token_default');
-
-        $hub_challenge = $request->input('hub_challenge');
-        
-        $hub_mode = $request->input('hub_mode');
-            
-        if($hub_verify_token_recieved === $hub_verify_token_expected){
-            echo $hub_challenge;
-        }else{
-           // throw new \Exception("Tokken not verified");
-           echo "Tokken not verified";
-        }
+    	Log::info('Post-WebHook: ----- |:  ' );
 
     	// $input = json_decode(file_get_contents('php://input'), true);
 
-        $input =  $request->json()->all(); //read json in request
+        // $input =  $request->json()->all(); //read json in request
+        $input =   print_r($request->json()->all(), true ); //read json in request
 
-        var_dump($input);
+        // var_dump($input);
         //return response()->json($data); 
          // "hiiii";
-         die("jj");
+         // die("jj");
          
         $message = $this->readMessage($input);
         $textmessage = $this->sendMessage($message);
