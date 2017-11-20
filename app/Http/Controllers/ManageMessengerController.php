@@ -148,14 +148,11 @@ class ManageMessengerController extends Controller
         $answer = ["text" => 'great you are at' . $input['location'], ];
         $response = ['recipient' => ['id' => $senderId], 'message' => $answer, 'access_token' => $accessToken];
        }elseif($messageText == 'help'){
-        $answer = ['msg1' => 'list - to list repo', 
-                   'msg2' =>  'recent - to list recent repo',
-                   'msg3' =>  'status - to get your account status.'];
-
+        $answer = 'Help: list, recent, status, all';
         $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
        }
        elseif (!empty($messageText)) {
-        $answer = 'I can not Understand you ask me about commits';
+        $answer = 'I can not Understand you ask me about blogs';
         $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
        }
 
