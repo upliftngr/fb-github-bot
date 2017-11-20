@@ -151,7 +151,7 @@ class ManageMessengerController extends Controller
         $answer = 'Help: list, recent, status, all';
         $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
        }elseif($messageText == 'list'){
-        $answer = 'All Repo List';
+        $answer = 'List Of Other Repos';
         $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
        }elseif($messageText == 'recent'){
         $answer = 'Recent Updates On Repos';
@@ -160,8 +160,16 @@ class ManageMessengerController extends Controller
         $answer = 'Git Repo Status';
         $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
        }
+   }elseif($messageText == 'role'){
+        $answer = 'Your Role is Technical Related';
+        $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
+       }
+   }elseif($messageText == 'all'){
+        $answer = 'All Repos Available';
+        $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
+       }
        elseif (!empty($messageText)) {
-        $answer = 'I can not Understand you ask me about blogs';
+        $answer = 'I can not Understand you ask me about anything else via help:`';
         $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
        }
 
