@@ -58,6 +58,13 @@ class ManageMessengerController extends Controller
 
     	$input = json_decode(file_get_contents('php://input'), true);
 
+        // $input =  $request->json()->all(); //read json in request
+
+        // var_dump($input);
+        //return response()->json($data); 
+         // "hiiii";
+         // die("jj");
+         
         $message = $this->readMessage($input);
         $textmessage = $this->sendMessage($message);
 
