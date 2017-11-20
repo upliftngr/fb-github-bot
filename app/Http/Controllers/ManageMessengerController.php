@@ -10,10 +10,10 @@ use GuzzleHttp\Psr7\Request;
 
 class ManageMessengerController extends Controller
 {
-    $accessToken ;
+    
     function __construct()
     {
-    	$accessToken = env('PAGE_ACCESS_TOKEN', 'page_token_default');
+    	// $accessToken = env('PAGE_ACCESS_TOKEN', 'page_token_default');
     }
 
 
@@ -118,6 +118,8 @@ class ManageMessengerController extends Controller
 
     public function sendMessage($input)
     {
+        $accessToken = env('PAGE_ACCESS_TOKEN', 'page_token_default');
+
       try {
        $client = new GuzzleHttpClient();
        $url = "https://graph.facebook.com/v2.6/me/messages";
@@ -130,7 +132,7 @@ class ManageMessengerController extends Controller
        );
        if (in_array('hi', $msgarray)) {
             $answer = "Hello! how may I help you today?";
-            $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $this->accessToken];
+            $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
          }
          elseif ($messageText == 'get started') {
             $answer = [
@@ -148,11 +150,11 @@ class ManageMessengerController extends Controller
         }
        elseif (!empty($input['location'])) {
         $answer = ["text" => 'great you are at' . $input['location'], ];
-        $response = ['recipient' => ['id' => $senderId], 'message' => $answer, 'access_token' => $this->accessToken];
+        $response = ['recipient' => ['id' => $senderId], 'message' => $answer, 'access_token' => $accessToken];
        }
        elseif (!empty($messageText)) {
         $answer = 'I can not Understand you ask me about blogs';
-        $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $this->accessToken];
+        $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
        }
 
        $response = $client->post($url, ['query' => $response, 'headers' => $header]);
