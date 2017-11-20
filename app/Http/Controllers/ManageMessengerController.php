@@ -53,7 +53,8 @@ class ManageMessengerController extends Controller
         if($hub_verify_token_recieved === $hub_verify_token_expected){
             echo $hub_challenge;
         }else{
-           throw new \Exception("Tokken not verified");
+           // throw new \Exception("Tokken not verified");
+           echo "Tokken not verified";
         }
 
     	$input = json_decode(file_get_contents('php://input'), true);
