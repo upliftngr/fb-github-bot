@@ -150,6 +150,15 @@ class ManageMessengerController extends Controller
        }elseif($messageText == 'help'){
         $answer = 'Help: list, recent, status, all';
         $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
+       }elseif($messageText == 'list'){
+        $answer = 'All Repo List';
+        $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
+       }elseif($messageText == 'recent'){
+        $answer = 'Recent Updates On Repos';
+        $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
+       }elseif($messageText == 'status'){
+        $answer = 'Git Repo Status';
+        $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
        }
        elseif (!empty($messageText)) {
         $answer = 'I can not Understand you ask me about blogs';
