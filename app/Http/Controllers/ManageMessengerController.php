@@ -41,12 +41,12 @@ class ManageMessengerController extends Controller
     {
 
         // Log::info('Post-WebHook: '. implode($request->input(), "  " ));
-    	Log::info('Post-WebHook: ----- |:  '. print_r($request->json()->input('entry'), true ) );
+    	Log::info('Post-WebHook: ----- |:  '. print_r($request->json()->all(), true ) );
 
     	// $input = json_decode(file_get_contents('php://input'), true);
 
         // $input =  $request->json()->all(); //read json in request
-        $input =   print_r($request->json()->all(), true ); //read json in request
+        $input =   print_r($request->input(), true ); //read json in request
 
         // var_dump($input);
         //return response()->json($data); 
