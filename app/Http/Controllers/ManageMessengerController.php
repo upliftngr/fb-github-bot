@@ -40,7 +40,8 @@ class ManageMessengerController extends Controller
     public function postWebhook(Request $request)
     {
 
-    	Log::info('Post-WebHook: '. implode($request->input(), "  " ));
+        // Log::info('Post-WebHook: '. implode($request->input(), "  " ));
+    	Log::info('Post-WebHook: '. $request->input('hub_verify_token') );
 
         $hub_verify_token_recieved = $request->input('hub_verify_token');
         $hub_verify_token_expected = env('WEBHOOK_TOKEN', 'webhook_token_default');
@@ -57,9 +58,9 @@ class ManageMessengerController extends Controller
            echo "Tokken not verified";
         }
 
-    	$input = json_decode(file_get_contents('php://input'), true);
+    	// $input = json_decode(file_get_contents('php://input'), true);
 
-        // $input =  $request->json()->all(); //read json in request
+        $input =  $request->json()->all(); //read json in request
 
         var_dump($input);
         //return response()->json($data); 
@@ -129,7 +130,8 @@ class ManageMessengerController extends Controller
 
       try {
        $client = new GuzzleHttpClient();
-       $url = "https://graph.facebook.com/v2.6/me/messages";
+       // $url = "https://graph.facebook.com/v2.6/me/messages";
+       $url = "https://graph.facebook.com/v2.10/me/messages";
        $messageText = strtolower($input['message']);
        $senderId = $input['senderid'];
        $msgarray = explode(' ', $messageText);
