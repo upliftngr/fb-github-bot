@@ -116,7 +116,7 @@ class ManageMessengerController extends Controller
         $accessToken = env('PAGE_ACCESS_TOKEN', 'page_token_default');
 
       try {
-       $client = new GuzzleHttpClient();
+       $client = new Client();
        // $url = "https://graph.facebook.com/v2.6/me/messages";
        $url = "https://graph.facebook.com/v2.10/me/messages";
        $messageText = strtolower($input['message']);
