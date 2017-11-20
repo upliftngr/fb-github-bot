@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Request;
 
 class ManageMessengerController extends Controller
 {
+    $accessToken ;
     function __construct()
     {
-    	
+    	$accessToken = env('PAGE_ACCESS_TOKEN', 'page_token_default');
     }
 
 
@@ -24,7 +27,7 @@ class ManageMessengerController extends Controller
     	$hub_challenge = $request->input('hub_challenge');
     	$hub_verify_token = $request->input('hub_verify_token');
     		
-    	if($hub_verify_token === $webhook_token){
+    	if($hub_mode === 'subscribe' && $hub_verify_token === $webhook_token){
     		echo $hub_challenge;
     	}else{
     	   throw new Exception("Tokken not verified");
@@ -38,19 +41,27 @@ class ManageMessengerController extends Controller
     public function postWebhook(Request $request)
     {
 
-    	Log::info('Post-WebHook: '. implode($request->input(), "  " ));
+    	// Log::info('Post-WebHook: '. implode($request->input(), "  " ));
 
-        $hub_mode = $request->input('hub_mode');
+        $hub_verify_token_recieved = $request->input('hub_verify_token');
+        $hub_verify_token_expected = env('WEBHOOK_TOKEN', 'webhook_token_default');
+        $pageAccessToken = $webhook_token = env('PAGE_ACCESS_TOKEN', 'page_token_default');
+
         $hub_challenge = $request->input('hub_challenge');
-        $hub_verify_token = $request->input('hub_verify_token');
+        
+        $hub_mode = $request->input('hub_mode');
             
-        if($hub_verify_token === $webhook_token){
+        if($hub_verify_token_recieved === $hub_verify_token_expected){
             echo $hub_challenge;
         }else{
            throw new Exception("Tokken not verified");
         }
 
-    	echo "Working";
+    	$input = json_decode(file_get_contents('php://input'), true);
+
+        $message = $this->readMessage($input);
+        $textmessage = $this->sendMessage($message);
+
     }
 
 
@@ -78,6 +89,82 @@ class ManageMessengerController extends Controller
     		
 	}
 
+    public function readMessage($input)
+    {
+      try{
+           $payloads = null;
+           $senderId = $input['entry'][0]['messaging'][0]['sender']['id'];
+           $messageText = $input['entry'][0]['messaging'][0]['message']['text'];
+           $postback = $input['entry'][0]['messaging'][0]['postback'];
+           $loctitle = $input['entry'][0]['messaging'][0]['message']['attachments'][0]['title'];
+           if (!empty($postback)) {
+            $payloads = $input['entry'][0]['messaging'][0]['postback']['payload'];
+            return ['senderid' => $senderId, 'message' => $payloads];
+           }
 
+           if (!empty($loctitle)) {
+            $payloads = $input['entry'][0]['messaging'][0]['postback']       ['payload'];
+            return ['senderid' => $senderId, 'message' => $messageText, 'location' => $loctitle];
+           }
+
+           // var_dump($senderId,$messageText,$payload);
+           //   $payload_txt = $input['entry'][0]['messaging'][0]['message']['quick_reply']‌​['payload'];
+
+           return ['senderid' => $senderId, 'message' => $messageText];
+        }catch(Exception $ex) {
+            return $ex->getMessage();
+      }
+    }
+
+    public function sendMessage($input)
+    {
+      try {
+       $client = new GuzzleHttpClient();
+       $url = "https://graph.facebook.com/v2.6/me/messages";
+       $messageText = strtolower($input['message']);
+       $senderId = $input['senderid'];
+       $msgarray = explode(' ', $messageText);
+       $response = null;
+       $header = array(
+        'content-type' => 'application/json'
+       );
+       if (in_array('hi', $msgarray)) {
+            $answer = "Hello! how may I help you today?";
+            $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $this->accessToken];
+         }
+         elseif ($messageText == 'get started') {
+            $answer = [
+            "text" => "Please share your location:", 
+            "quick_replies" => [
+            [
+            "content_type" => "location", 
+            ]
+            ]];
+            $response = [
+            'recipient' => ['id' => $senderId], 
+            'message' => $answer, 
+            'access_token' => $this->accessToken
+            ];
+        }
+       elseif (!empty($input['location'])) {
+        $answer = ["text" => 'great you are at' . $input['location'], ];
+        $response = ['recipient' => ['id' => $senderId], 'message' => $answer, 'access_token' => $this->accessToken];
+       }
+       elseif (!empty($messageText)) {
+        $answer = 'I can not Understand you ask me about blogs';
+        $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $this->accessToken];
+       }
+
+       $response = $client->post($url, ['query' => $response, 'headers' => $header]);
+
+       return true;
+      }
+
+      catch(RequestException $e) {
+       $response = json_decode($e->getResponse()->getBody(true)->getContents());
+       file_put_contents("test.json", json_encode($response));
+       return $response;
+      }
+    }
 
 }
