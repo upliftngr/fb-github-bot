@@ -6,14 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7\Request;
 
 class ManageMessengerController extends Controller
 {
     
     function __construct()
     {
-    	// $accessToken = env('PAGE_ACCESS_TOKEN', 'page_token_default');
+        
     }
 
 
