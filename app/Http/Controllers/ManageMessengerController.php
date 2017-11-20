@@ -40,7 +40,7 @@ class ManageMessengerController extends Controller
     public function postWebhook(Request $request)
     {
 
-    	// Log::info('Post-WebHook: '. implode($request->input(), "  " ));
+    	Log::info('Post-WebHook: '. implode($request->input(), "  " ));
 
         $hub_verify_token_recieved = $request->input('hub_verify_token');
         $hub_verify_token_expected = env('WEBHOOK_TOKEN', 'webhook_token_default');
