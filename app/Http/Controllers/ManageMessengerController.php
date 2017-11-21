@@ -221,7 +221,7 @@ class ManageMessengerController extends Controller
        
        }elseif($messageText == 'all'){
 
-            $titleAnswer = strtoupper('List Of At least 100 Repositories On Github');
+            $titleAnswer = strtoupper('List Of Some Public Repositories On Github');
             $ansersArray = \Facades\App\Http\Controllers\ManageGitHubController::display('all');
 
             //post the Title
