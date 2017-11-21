@@ -201,8 +201,9 @@ class ManageMessengerController extends Controller
 
                 if ((time() - $time) >= 10) {
                     $time = time();
+                    break;
                 }
-                sleep(2);
+                
             }
             
             
@@ -235,8 +236,9 @@ class ManageMessengerController extends Controller
 
                 if ((time() - $time) >= 10) {
                     $time = time();
+                    break;
                 }
-                sleep(2);
+                
                 
             }
        }
