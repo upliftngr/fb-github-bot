@@ -195,11 +195,11 @@ class ManageMessengerController extends Controller
             $ansersArray = \Facades\App\Http\Controllers\ManageGitHubController::display('list');
 
             //post the Title
-            $this->postMessage($senderId, $titleAnswer, $accessToken, $header);
+            $this->postMessage($senderId, $titleAnswer, $accessToken, $header, $client);
 
             //post each of the message
             foreach ($ansersArray as  $eachAnswer) {
-                $this->postMessage($senderId, $eachAnswer, $accessToken, $header);
+                $this->postMessage($senderId, $eachAnswer, $accessToken, $header, $client);
                 // echo "$value";
             }
             
@@ -222,11 +222,11 @@ class ManageMessengerController extends Controller
             $ansersArray = \Facades\App\Http\Controllers\ManageGitHubController::display('all');
 
             //post the Title
-            $this->postMessage($senderId, $titleAnswer, $accessToken, $header);
+            $this->postMessage($senderId, $titleAnswer, $accessToken, $header, $client);
 
             //post each of the message
             foreach ($ansersArray as  $eachAnswer) {
-                $this->postMessage($senderId, $eachAnswer, $accessToken, $header);
+                $this->postMessage($senderId, $eachAnswer, $accessToken, $header, $client);
                 // echo "$value";
             }
        }
@@ -248,7 +248,7 @@ class ManageMessengerController extends Controller
       }
     }
 
-    public function postMessage($senderId, $answer, $accessToken, $header)
+    public function postMessage($senderId, $answer, $accessToken, $header, $client)
     {
         $url = "https://graph.facebook.com/v2.10/me/messages";
         $response_json = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
