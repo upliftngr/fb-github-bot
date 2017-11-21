@@ -195,7 +195,7 @@ class ManageMessengerController extends Controller
             $ansersArray = \Facades\App\Http\Controllers\ManageGitHubController::display('list');
 
             //post the Title
-            $this->postMessage($senderId, $titleAnswer, $accessToken, $header)
+            $this->postMessage($senderId, $titleAnswer, $accessToken, $header);
 
             //post each of the message
             foreach ($ansersArray as  $eachAnswer) {
@@ -217,12 +217,12 @@ class ManageMessengerController extends Controller
         $response = $client->post($url, ['query' => $response_json, 'headers' => $header]);
        
        }elseif($messageText == 'all'){
-        
+
             $titleAnswer = strtoupper('List Of Repositories');
             $ansersArray = \Facades\App\Http\Controllers\ManageGitHubController::display('all');
 
             //post the Title
-            $this->postMessage($senderId, $titleAnswer, $accessToken, $header)
+            $this->postMessage($senderId, $titleAnswer, $accessToken, $header);
 
             //post each of the message
             foreach ($ansersArray as  $eachAnswer) {
