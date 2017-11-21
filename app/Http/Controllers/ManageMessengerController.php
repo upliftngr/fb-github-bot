@@ -98,9 +98,6 @@ class ManageMessengerController extends Controller
             return ['senderid' => $senderId, 'message' => $messageText, 'location' => $loctitle];
            }
 
-           // var_dump($senderId,$messageText,$payload);
-           //   $payload_txt = $input['entry'][0]['messaging'][0]['message']['quick_reply']‌​['payload'];
-
            return ['senderid' => $senderId, 'message' => $messageText];
         }catch(Exception $ex) {
             return $ex->getMessage();
@@ -163,7 +160,7 @@ class ManageMessengerController extends Controller
         'content-type' => 'application/json'
        );
        if (in_array('hi', $msgarray)) {
-            $answer = "Hello! Welcome to GitHubMessenger-Integrated-Bot. how may I help you today?";
+            $answer = "Hello! Welcome!! To GitHubMessenger-Integrated-Bot :). how may I help you today?";
             $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
          }
          elseif ($messageText == 'get started') {
@@ -191,7 +188,7 @@ class ManageMessengerController extends Controller
         $response = $client->post($url, ['query' => $response_json, 'headers' => $header]);
        }elseif($messageText == 'list'){
 
-            $titleAnswer = strtoupper('List Of Repositories');
+            $titleAnswer = strtoupper('List Of My Repositories');
             $ansersArray = \Facades\App\Http\Controllers\ManageGitHubController::display('list');
 
             //post the Title
@@ -218,7 +215,7 @@ class ManageMessengerController extends Controller
        
        }elseif($messageText == 'all'){
 
-            $titleAnswer = strtoupper('List Of Repositories');
+            $titleAnswer = strtoupper('List Of At least 100 Repositories On Github');
             $ansersArray = \Facades\App\Http\Controllers\ManageGitHubController::display('all');
 
             //post the Title
