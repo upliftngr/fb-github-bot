@@ -188,17 +188,16 @@ class ManageMessengerController extends Controller
         $response = $client->post($url, ['query' => $response_json, 'headers' => $header]);
        }elseif($messageText == 'list'){
 
-            $titleAnswer = strtoupper('List Of My/Organization Repositories');
+            $titleAnswer = strtoupper('List Of My/Organizat Repositories');
             $ansersArray = \Facades\App\Http\Controllers\ManageGitHubController::display('list');
 
             //post the Title
             $this->postMessage($senderId, $titleAnswer, $accessToken, $header, $client);
 
             //post each of the message
-            foreach ($ansersArray as  $eachAnswer) {
-              //  $this->postMessage($senderId, $eachAnswer, $accessToken, $header, $client);
-                // echo "$value";
-            }
+            /*foreach ($ansersArray as  $eachAnswer) {
+                $this->postMessage($senderId, $eachAnswer, $accessToken, $header, $client);
+            }*/
             
             
        }elseif($messageText == 'recent'){
