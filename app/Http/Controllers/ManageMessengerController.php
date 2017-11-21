@@ -209,7 +209,7 @@ class ManageMessengerController extends Controller
             
        }elseif($messageText == 'recent'){
         $answer = 'Recent Updates On Repos';
-        $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
+        $response_json = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
         $response = $client->post($url, ['query' => $response_json, 'headers' => $header]);
        }elseif($messageText == 'status'){
         $answer = 'Git Repo Status';
