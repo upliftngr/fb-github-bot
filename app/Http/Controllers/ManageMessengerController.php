@@ -199,7 +199,7 @@ class ManageMessengerController extends Controller
             foreach ($ansersArray as  $eachAnswer) {
                 $this->postMessage($senderId, $eachAnswer, $accessToken, $header, $client);
 
-                if ((time() - $time) >= 10) {
+                if ((time() - $time) >= 5) {
                     $time = time();
                     break;
                 }
@@ -234,7 +234,7 @@ class ManageMessengerController extends Controller
 
                 $this->postMessage($senderId, $eachAnswer, $accessToken, $header, $client);
 
-                if ((time() - $time) >= 10) {
+                if ((time() - $time) >= 5) {
                     $time = time();
                     break;
                 }
