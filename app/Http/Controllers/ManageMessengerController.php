@@ -84,7 +84,7 @@ class ManageMessengerController extends Controller
       try{
            $payloads = null;
            $senderId = $input['entry'][0]['messaging'][0]['sender']['id'];
-           $messageText = $input['entry'][0]['messaging'][0]['message']['text'];
+           $messageText = isset($input['entry'][0]['messaging'][0]['message']['text'])? $input['entry'][0]['messaging'][0]['message']['text'] : '' ;
            $postback = '';
            $postback = isset($input['entry'][0]['messaging'][0]['postback'])? $input['entry'][0]['messaging'][0]['postback'] : '';
            $loctitle = isset($input['entry'][0]['messaging'][0]['message']['attachments'][0]['title'])? $input['entry'][0]['messaging'][0]['message']['attachments'][0]['title'] : '' ;
