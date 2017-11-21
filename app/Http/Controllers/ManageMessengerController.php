@@ -199,7 +199,7 @@ class ManageMessengerController extends Controller
 
             //post each of the message
             foreach ($ansersArray as  $eachAnswer) {
-                $this->postMessage($senderId, $eachAnswer, $accessToken, $header)
+                $this->postMessage($senderId, $eachAnswer, $accessToken, $header);
                 // echo "$value";
             }
             
@@ -226,7 +226,7 @@ class ManageMessengerController extends Controller
 
             //post each of the message
             foreach ($ansersArray as  $eachAnswer) {
-                $this->postMessage($senderId, $eachAnswer, $accessToken, $header)
+                $this->postMessage($senderId, $eachAnswer, $accessToken, $header);
                 // echo "$value";
             }
        }
