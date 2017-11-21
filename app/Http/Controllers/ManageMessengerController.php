@@ -201,7 +201,7 @@ class ManageMessengerController extends Controller
             foreach ($ansersArray as  $eachAnswer) {
                 $this->postMessage($senderId, $eachAnswer, $accessToken, $header)
                 // echo "$value";
-            };
+            }
             
             
        }elseif($messageText == 'recent'){
@@ -217,6 +217,7 @@ class ManageMessengerController extends Controller
         $response = $client->post($url, ['query' => $response_json, 'headers' => $header]);
        
        }elseif($messageText == 'all'){
+        
             $titleAnswer = strtoupper('List Of Repositories');
             $ansersArray = \Facades\App\Http\Controllers\ManageGitHubController::display('all');
 
@@ -227,7 +228,7 @@ class ManageMessengerController extends Controller
             foreach ($ansersArray as  $eachAnswer) {
                 $this->postMessage($senderId, $eachAnswer, $accessToken, $header)
                 // echo "$value";
-            };
+            }
        }
        elseif (!empty($messageText)) {
         $answer = 'I can not Understand you ask me about anything else via help:`';
