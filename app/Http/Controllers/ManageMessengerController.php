@@ -40,20 +40,17 @@ class ManageMessengerController extends Controller
     public function postWebhook(Request $request)
     {
 
-        // Log::info('Post-WebHook: '. implode($request->input(), "  " ));
     	Log::info('Post-WebHook: ----- |:  '. print_r($request->input('entry'), true ) );
 
-    	// $input = json_decode(file_get_contents('php://input'), true);
-
-        // $input =  $request->json()->all(); //read json in request
         $input =   $request->input(); //read json in request
 
-        // var_dump($input);
-        //return response()->json($data); 
-         // "hiiii";
-         // die("jj");
-         
+        /**
+         * Reads the input
+         * @var [type]
+         */
         $message = $this->readMessage($input);
+
+
         $textmessage = $this->sendMessage($message);
 
     }
@@ -110,13 +107,53 @@ class ManageMessengerController extends Controller
       }
     }
 
+    /**
+     * This is to send a single response
+     * @param  [type] $responseAnswer [description]
+     * @return [type]          [description]
+     */
+    public function sendSingleResponse($input, $responseAnswer){
+        
+        $accessToken = env('PAGE_ACCESS_TOKEN', 'page_token_default');
+
+        try {
+
+            $client = new Client();
+ 
+            $url = "https://graph.facebook.com/v2.10/me/messages";
+            $messageText = strtolower($input['message']);
+            $senderId = $input['senderid'];
+            $msgarray = explode(' ', $messageText);
+            $response = null;
+            $header = array(
+              'content-type' => 'application/json'
+            );
+
+            if (!empty($responseAnswer)) {
+                
+                $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $responseAnswer], 'access_token' => $accessToken];
+           }
+
+           $response = $client->post($url, ['query' => $response, 'headers' => $header]);
+
+           return true;
+
+      }catch(RequestException $e) {
+           $response = json_decode($e->getResponse()->getBody(true)->getContents());
+           file_put_contents("test.json", json_encode($response));
+           return $response;
+         
+     }
+
+    }
+
     public function sendMessage($input)
     {
         $accessToken = env('PAGE_ACCESS_TOKEN', 'page_token_default');
 
       try {
        $client = new Client();
-       // $url = "https://graph.facebook.com/v2.6/me/messages";
+
        $url = "https://graph.facebook.com/v2.10/me/messages";
        $messageText = strtolower($input['message']);
        $senderId = $input['senderid'];
@@ -142,36 +179,63 @@ class ManageMessengerController extends Controller
             'message' => $answer, 
             'access_token' => $accessToken
             ];
+            $response = $client->post($url, ['query' => $response_json, 'headers' => $header]);
         }
        elseif (!empty($input['location'])) {
         $answer = ["text" => 'great you are at' . $input['location'], ];
-        $response = ['recipient' => ['id' => $senderId], 'message' => $answer, 'access_token' => $accessToken];
+        $response_json = ['recipient' => ['id' => $senderId], 'message' => $answer, 'access_token' => $accessToken];
+        $response = $client->post($url, ['query' => $response_json, 'headers' => $header]);
        }elseif($messageText == 'help'){
         $answer = 'Help: list, recent, status, all';
-        $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
+        $response_json = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
+        $response = $client->post($url, ['query' => $response_json, 'headers' => $header]);
        }elseif($messageText == 'list'){
-        $answer = 'List Of Other Repos';
-        $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
+
+            $titleAnswer = strtoupper('List Of Repositories');
+            $ansersArray = \Facades\App\Http\Controllers\ManageGitHubController::display('list');
+
+            //post the Title
+            $this->postMessage($senderId, $titleAnswer, $accessToken, $header)
+
+            //post each of the message
+            foreach ($ansersArray as  $eachAnswer) {
+                $this->postMessage($senderId, $eachAnswer, $accessToken, $header)
+                // echo "$value";
+            };
+            
+            
        }elseif($messageText == 'recent'){
         $answer = 'Recent Updates On Repos';
         $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
+        $response = $client->post($url, ['query' => $response_json, 'headers' => $header]);
        }elseif($messageText == 'status'){
         $answer = 'Git Repo Status';
-        $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
+        $response_json = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
        }elseif($messageText == 'role'){
-        $answer = 'Your Role is Technical Related';
-        $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
+        $answer = 'Your Role If Any Technical Related';
+        $response_json = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
+        $response = $client->post($url, ['query' => $response_json, 'headers' => $header]);
        
        }elseif($messageText == 'all'){
-        $answer = 'All Repos Available';
-        $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
+            $titleAnswer = strtoupper('List Of Repositories');
+            $ansersArray = \Facades\App\Http\Controllers\ManageGitHubController::display('all');
+
+            //post the Title
+            $this->postMessage($senderId, $titleAnswer, $accessToken, $header)
+
+            //post each of the message
+            foreach ($ansersArray as  $eachAnswer) {
+                $this->postMessage($senderId, $eachAnswer, $accessToken, $header)
+                // echo "$value";
+            };
        }
        elseif (!empty($messageText)) {
         $answer = 'I can not Understand you ask me about anything else via help:`';
-        $response = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
+        $response_json = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
+        $response = $client->post($url, ['query' => $response_json, 'headers' => $header]);
        }
 
-       $response = $client->post($url, ['query' => $response, 'headers' => $header]);
+       // $response = $client->post($url, ['query' => $response_json, 'headers' => $header]);
 
        return true;
       }
@@ -181,6 +245,13 @@ class ManageMessengerController extends Controller
        file_put_contents("test.json", json_encode($response));
        return $response;
       }
+    }
+
+    public function postMessage($senderId, $answer, $accessToken, $header)
+    {
+        $url = "https://graph.facebook.com/v2.10/me/messages";
+        $response_json = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
+        $response = $client->post($url, ['query' => $response_json, 'headers' => $header]);
     }
 
 }

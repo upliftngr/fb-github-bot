@@ -13,30 +13,60 @@ class ManageGitHubController extends Controller
 	 */
     public function connectToGitHub()
     {
-    	echo "Test Method Call";
+    	
+		$ansers_ = \Facades\App\Http\Controllers\ManageGitHubController::display('list');
 
-    	$org = GitHub::me()->organizations();
-		// we're done here - how easy was that, it just works!
-
-		// $repos = GitHub::repo()->show('upliftngr', 'Laravel-GitHub');
-		// $repos = GitHub::repo()->show('upliftngr', 'fb-github-bot');
-		// $repos = GitHub::repo()->contributors('ornicar', 'php-github-api');
-		// $repos = GitHub::repo()->contributors('upliftngr', 'fb-github-bot');
-		// $repos = GitHub::user()->repositories('upliftngr');
-		$all_repos = GitHub::user()->repositories('lightgh');
-		echo "<h3>ALL - REPOS</h3>";
-		dump($all_repos);
-		/*foreach ($all_repos as $key => $each_repo) {
-			echo "<h4>REPO: ({$each_repo['name']}) </h4>";
-			dump((GitHub::repo()->contributors('lightgh', $each_repo['name'])));
-		}*/
-		// $repos = GitHub::repo()->contributors('lightgh', 'basicgit-class');
-		// this example is simple, and there are far more methods available
-		
-		// $repos = GitHub::authorizations()->all();
-		$repos = GitHub::connection('other')->authorizations()->all();
-		dump($repos); 
-		
+    	foreach ($ansers_ as $a_repo) {
+    		//echo "<h4>".$a_repo."<h4>";
+    	}
 
     }
+
+
+    public function display($value='')
+    {
+    	if( strtolower($value) == 'listorg' || strtolower($value) == 'lo' ){
+    		$org = GitHub::me()->organizations();
+			$each_v = array();
+			foreach ($org as $key => $value) {
+				$each_v[] =  $value['login'];
+			}
+			return $each_v;
+    	}
+
+    	if( strtolower($value) == 'list' || strtolower($value) == 'l' ){
+    		$all_repos = GitHub::user()->repositories('lightgh');
+			$each_v = array();
+			$each_v[] = "Individual Repo: ";
+			foreach ($all_repos as $value) {
+				$each_v[] =  $value['full_name'];
+			}
+			return $each_v;
+    	}
+
+    	if( strtolower($value) == 'all' || strtolower($value) == 'al' ){
+    		$ansers_ = $this->display('listorg');
+
+    		$each_v = array();
+
+			foreach ($ansers_ as $value) {
+				$each_v[] = "== Organization-Name: $value ==";
+				$all_repos = GitHub::user()->repositories($value);
+
+		    	foreach ($all_repos as $a_repo) {
+		    		$each_v[] = $a_repo['full_name'];
+		    	}
+			}
+
+    		$all_repos = GitHub::user()->repositories('lightgh');
+			
+			$each_v[] = "== By Individuals ==";
+			foreach ($all_repos as $a_repo) {
+    		 	$each_v[] = $a_repo['full_name'];
+    		}
+
+			return $each_v;
+    	}
+    }
 }
+
