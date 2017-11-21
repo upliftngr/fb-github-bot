@@ -188,16 +188,22 @@ class ManageMessengerController extends Controller
         $response = $client->post($url, ['query' => $response_json, 'headers' => $header]);
        }elseif($messageText == 'list'){
 
-            $titleAnswer = strtoupper('List Of My/Organizat Repositories');
+            $titleAnswer = strtoupper('List Of My & Organization Repositories');
             $ansersArray = \Facades\App\Http\Controllers\ManageGitHubController::display('list');
 
             //post the Title
             $this->postMessage($senderId, $titleAnswer, $accessToken, $header, $client);
 
+            $time = time();
             //post each of the message
-            /*foreach ($ansersArray as  $eachAnswer) {
+            foreach ($ansersArray as  $eachAnswer) {
                 $this->postMessage($senderId, $eachAnswer, $accessToken, $header, $client);
-            }*/
+
+                if ((time() - $time) >= 240) {
+                    $time = time();
+                }
+                sleep(2);
+            }
             
             
        }elseif($messageText == 'recent'){
@@ -220,19 +226,29 @@ class ManageMessengerController extends Controller
             //post the Title
             $this->postMessage($senderId, $titleAnswer, $accessToken, $header, $client);
 
-            //post each of the message
+            $time = time();
+
+            //post each of the message and sleep after every two seconds
             foreach ($ansersArray as  $eachAnswer) {
+
                 $this->postMessage($senderId, $eachAnswer, $accessToken, $header, $client);
-                // echo "$value";
+
+                if ((time() - $time) >= 240) {
+                    $time = time();
+                }
+                sleep(2);
+                
             }
        }
        elseif (!empty($messageText)) {
         $answer = 'I can not Understand you ask me about anything else via help:`';
         $response_json = ['recipient' => ['id' => $senderId], 'message' => ['text' => $answer], 'access_token' => $accessToken];
         $response = $client->post($url, ['query' => $response_json, 'headers' => $header]);
+       }else{
+
+            $response = $client->post($url, ['query' => $response_json, 'headers' => $header]);
        }
 
-       // $response = $client->post($url, ['query' => $response_json, 'headers' => $header]);
 
        return true;
       }
