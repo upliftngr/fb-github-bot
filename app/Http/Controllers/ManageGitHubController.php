@@ -13,18 +13,25 @@ class ManageGitHubController extends Controller
 	 */
     public function connectToGitHub()
     {
-    	
+    	// $t = time();
 		$ansers_ = \Facades\App\Http\Controllers\ManageGitHubController::display('all');
 
     	foreach ($ansers_ as $a_repo) {
     		echo "<h4>".$a_repo."<h4>";
     	}
 
+    	// $t_s = time();
+
+    	// echo "$t<br/>";
+    	// echo "$t_s<br/>";
+    	// echo $t_s - $t;
+
     }
 
 
     public function display($value='')
     {
+    	
     	if( strtolower($value) == 'listorg' || strtolower($value) == 'lo' ){
     		$org = GitHub::me()->organizations();
 			$each_v = array();
