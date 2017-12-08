@@ -13,18 +13,25 @@ class ManageGitHubController extends Controller
 	 */
     public function connectToGitHub()
     {
-    	
-		$ansers_ = \Facades\App\Http\Controllers\ManageGitHubController::display('list');
+    	// $t = time();
+		$ansers_ = \Facades\App\Http\Controllers\ManageGitHubController::display('all');
 
     	foreach ($ansers_ as $a_repo) {
-    		//echo "<h4>".$a_repo."<h4>";
+    		echo "<h4>".$a_repo."<h4>";
     	}
+
+    	// $t_s = time();
+
+    	// echo "$t<br/>";
+    	// echo "$t_s<br/>";
+    	// echo $t_s - $t;
 
     }
 
 
     public function display($value='')
     {
+    	
     	if( strtolower($value) == 'listorg' || strtolower($value) == 'lo' ){
     		$org = GitHub::me()->organizations();
 			$each_v = array();
@@ -34,7 +41,13 @@ class ManageGitHubController extends Controller
 			return $each_v;
     	}
 
-    	if( strtolower($value) == 'list' || strtolower($value) == 'l' ){
+    	
+    	/**
+    	 * #TODO - Think of better appropriate name for this:
+    	 * This is the list of my repo. Yet to be added to the list of commands
+    	 * Currently List all the repositories of this individual
+    	 */
+    	if( strtolower($value) == 'listom' || strtolower($value) == 'lom' ){
     		$all_repos = GitHub::user()->repositories('lightgh');
 			$each_v = array();
 			$each_v[] = "Individual Repo: ";
@@ -44,7 +57,11 @@ class ManageGitHubController extends Controller
 			return $each_v;
     	}
 
-    	if( strtolower($value) == 'all' || strtolower($value) == 'al' ){
+    	/**
+    	 * List of account related repo such as organizations repo and 
+    	 * individual repositories 
+    	 */
+    	if( strtolower($value) == 'list' || strtolower($value) == 'al' ){
     		$ansers_ = $this->display('listorg');
 
     		$each_v = array();
@@ -64,6 +81,21 @@ class ManageGitHubController extends Controller
 			foreach ($all_repos as $a_repo) {
     		 	$each_v[] = $a_repo['full_name'];
     		}
+
+			return $each_v;
+    	}
+
+    	/**
+    	 * List about 100 the repositories on github
+    	 */
+    	if( strtolower($value) == 'all' || strtolower($value) == 'al' ){
+    		$all_repos = GitHub::repo()->all();
+
+    		$each_v = array();
+
+			foreach ($all_repos as $value) {
+				$each_v[] = $value['full_name'];
+			}
 
 			return $each_v;
     	}
